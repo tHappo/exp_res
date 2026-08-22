@@ -1,0 +1,346 @@
+(/vepfs-mlp2/c20250502/haoce/wangyangchuan/conda_env/fastwam_1) root@di-20260307214017-v7hl8:/vepfs-mlp2/c20250502/haoce/wangyangchuan/code/260813_FastWAM# CUDA_VISIBLE_DEVICES=1 python -u scripts/print_actual_three_expert.py   --depth 12   --action-dit-pretrained "$ACTION12"   --vqvae-checkpoint "$VQ_CKPT"   --va-checkpoint "$VA12"   --data-dir "$DATA/train"   2>&1 | stdbuf -oL -eL tee actual_three_expert_12l_k64_structure.txt
+[VA CKPT] missing=0 unexpected=0
+
+========================================================================================================================
+ACTUAL model.mot
+========================================================================================================================
+MoT(
+  (mixtures): ModuleDict(
+    (video): WanVideoDiT(
+      (patch_embedding): Conv3d(48, 3072, kernel_size=(1, 2, 2), stride=(1, 2, 2))
+      (text_embedding): Sequential(
+        (0): Linear(in_features=4096, out_features=3072, bias=True)
+        (1): GELU(approximate='tanh')
+        (2): Linear(in_features=3072, out_features=3072, bias=True)
+      )
+      (time_embedding): Sequential(
+        (0): Linear(in_features=256, out_features=3072, bias=True)
+        (1): SiLU()
+        (2): Linear(in_features=3072, out_features=3072, bias=True)
+      )
+      (time_projection): Sequential(
+        (0): SiLU()
+        (1): Linear(in_features=3072, out_features=18432, bias=True)
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x DiTBlock(
+          (self_attn): SelfAttention(
+            (q): Linear(in_features=3072, out_features=3072, bias=True)
+            (k): Linear(in_features=3072, out_features=3072, bias=True)
+            (v): Linear(in_features=3072, out_features=3072, bias=True)
+            (o): Linear(in_features=3072, out_features=3072, bias=True)
+            (norm_q): RMSNorm()
+            (norm_k): RMSNorm()
+          )
+          (cross_attn): CrossAttention(
+            (q): Linear(in_features=3072, out_features=3072, bias=True)
+            (k): Linear(in_features=3072, out_features=3072, bias=True)
+            (v): Linear(in_features=3072, out_features=3072, bias=True)
+            (o): Linear(in_features=3072, out_features=3072, bias=True)
+            (norm_q): RMSNorm()
+            (norm_k): RMSNorm()
+          )
+          (norm1): LayerNorm((3072,), eps=1e-06, elementwise_affine=False)
+          (norm2): LayerNorm((3072,), eps=1e-06, elementwise_affine=False)
+          (norm3): LayerNorm((3072,), eps=1e-06, elementwise_affine=True)
+          (ffn): Sequential(
+            (0): Linear(in_features=3072, out_features=14336, bias=True)
+            (1): GELU(approximate='tanh')
+            (2): Linear(in_features=14336, out_features=3072, bias=True)
+          )
+          (gate): GateModule()
+        )
+      )
+      (head): Head(
+        (norm): LayerNorm((3072,), eps=1e-06, elementwise_affine=False)
+        (head): Linear(in_features=3072, out_features=192, bias=True)
+      )
+    )
+    (action): ActionDiT(
+      (action_encoder): Linear(in_features=4, out_features=1024, bias=True)
+      (text_embedding): Sequential(
+        (0): Linear(in_features=4096, out_features=1024, bias=True)
+        (1): GELU(approximate='tanh')
+        (2): Linear(in_features=1024, out_features=1024, bias=True)
+      )
+      (time_embedding): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): SiLU()
+        (2): Linear(in_features=1024, out_features=1024, bias=True)
+      )
+      (time_projection): Sequential(
+        (0): SiLU()
+        (1): Linear(in_features=1024, out_features=6144, bias=True)
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x DiTBlock(
+          (self_attn): SelfAttention(
+            (q): Linear(in_features=1024, out_features=3072, bias=True)
+            (k): Linear(in_features=1024, out_features=3072, bias=True)
+            (v): Linear(in_features=1024, out_features=3072, bias=True)
+            (o): Linear(in_features=3072, out_features=1024, bias=True)
+            (norm_q): RMSNorm()
+            (norm_k): RMSNorm()
+          )
+          (cross_attn): CrossAttention(
+            (q): Linear(in_features=1024, out_features=3072, bias=True)
+            (k): Linear(in_features=1024, out_features=3072, bias=True)
+            (v): Linear(in_features=1024, out_features=3072, bias=True)
+            (o): Linear(in_features=3072, out_features=1024, bias=True)
+            (norm_q): RMSNorm()
+            (norm_k): RMSNorm()
+          )
+          (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+          (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+          (norm3): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (ffn): Sequential(
+            (0): Linear(in_features=1024, out_features=4096, bias=True)
+            (1): GELU(approximate='tanh')
+            (2): Linear(in_features=4096, out_features=1024, bias=True)
+          )
+          (gate): GateModule()
+        )
+      )
+      (head): Linear(in_features=1024, out_features=4, bias=True)
+    )
+    (wrench): WrenchDiT12(
+      (vqvae): WrenchVQVAE(
+        (encoder): WrenchEncoder(
+          (stem): Sequential(
+            (0): Conv1d(6, 128, kernel_size=(5,), stride=(1,), padding=(2,))
+            (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+            (2): GELU(approximate='none')
+          )
+          (strided): ModuleList(
+            (0): Sequential(
+              (0): Conv1d(128, 128, kernel_size=(5,), stride=(2,), padding=(2,))
+              (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+              (2): GELU(approximate='none')
+            )
+            (1): Sequential(
+              (0): Conv1d(128, 256, kernel_size=(5,), stride=(2,), padding=(2,))
+              (1): GroupNorm(8, 256, eps=1e-05, affine=True)
+              (2): GELU(approximate='none')
+            )
+          )
+          (proj): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+        )
+        (quantizer): VQEMAQuantizer()
+        (decoder): WrenchDecoder(
+          (from_embed): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+          (up_strided): ModuleList(
+            (0): Sequential(
+              (0): ConvTranspose1d(256, 128, kernel_size=(5,), stride=(2,), padding=(2,), output_padding=(1,))
+              (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+              (2): GELU(approximate='none')
+            )
+            (1): Sequential(
+              (0): ConvTranspose1d(128, 128, kernel_size=(5,), stride=(2,), padding=(2,), output_padding=(1,))
+              (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+              (2): GELU(approximate='none')
+            )
+          )
+          (head): Conv1d(128, 6, kernel_size=(5,), stride=(1,), padding=(2,))
+        )
+      )
+      (history_code_embedding): Embedding(64, 1024)
+      (current_wrench_encoder): Linear(in_features=6, out_features=1024, bias=True)
+      (future_wrench_encoder): Linear(in_features=6, out_features=1024, bias=True)
+      (state_film): StateFiLM(
+        (encoder): Sequential(
+          (0): LayerNorm((17,), eps=1e-05, elementwise_affine=True)
+          (1): Linear(in_features=17, out_features=256, bias=True)
+          (2): SiLU()
+          (3): Linear(in_features=256, out_features=2048, bias=True)
+        )
+      )
+      (text_embedding): Sequential(
+        (0): Linear(in_features=4096, out_features=1024, bias=True)
+        (1): GELU(approximate='tanh')
+        (2): Linear(in_features=1024, out_features=1024, bias=True)
+      )
+      (time_embedding): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): SiLU()
+        (2): Linear(in_features=1024, out_features=1024, bias=True)
+      )
+      (time_projection): Sequential(
+        (0): SiLU()
+        (1): Linear(in_features=1024, out_features=6144, bias=True)
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x DiTBlock(
+          (self_attn): SelfAttention(
+            (q): Linear(in_features=1024, out_features=3072, bias=True)
+            (k): Linear(in_features=1024, out_features=3072, bias=True)
+            (v): Linear(in_features=1024, out_features=3072, bias=True)
+            (o): Linear(in_features=3072, out_features=1024, bias=True)
+            (norm_q): RMSNorm()
+            (norm_k): RMSNorm()
+          )
+          (cross_attn): CrossAttention(
+            (q): Linear(in_features=1024, out_features=3072, bias=True)
+            (k): Linear(in_features=1024, out_features=3072, bias=True)
+            (v): Linear(in_features=1024, out_features=3072, bias=True)
+            (o): Linear(in_features=3072, out_features=1024, bias=True)
+            (norm_q): RMSNorm()
+            (norm_k): RMSNorm()
+          )
+          (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+          (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+          (norm3): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+          (ffn): Sequential(
+            (0): Linear(in_features=1024, out_features=4096, bias=True)
+            (1): GELU(approximate='tanh')
+            (2): Linear(in_features=4096, out_features=1024, bias=True)
+          )
+          (gate): GateModule()
+        )
+      )
+      (head): Linear(in_features=1024, out_features=6, bias=True)
+    )
+  )
+)
+
+experts = ['video', 'action', 'wrench']
+num_layers = 12
+num_heads = 24
+head_dim = 128
+
+========================================================================================================================
+ACTUAL EXPERT PARAMETERS
+========================================================================================================================
+video      class=WanVideoDiT        layers=12  params=2,053,967,040 (2.0540B)
+action     class=ActionDiT          layers=12  params=416,070,660 (0.4161B)
+wrench     class=WrenchDiT12        layers=12  params=417,573,678 (0.4176B)
+
+========================================================================================================================
+PARAMETER INDEPENDENCE
+========================================================================================================================
+action block id = 140080558709808
+wrench block id = 140080556290064
+same object = False
+Action Q weight ptr = 140057910444032
+Wrench Q weight ptr = 140053628059648
+
+========================================================================================================================
+ACTUAL WRENCH VQ-VAE
+========================================================================================================================
+WrenchVQVAE(
+  (encoder): WrenchEncoder(
+    (stem): Sequential(
+      (0): Conv1d(6, 128, kernel_size=(5,), stride=(1,), padding=(2,))
+      (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+      (2): GELU(approximate='none')
+    )
+    (strided): ModuleList(
+      (0): Sequential(
+        (0): Conv1d(128, 128, kernel_size=(5,), stride=(2,), padding=(2,))
+        (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+        (2): GELU(approximate='none')
+      )
+      (1): Sequential(
+        (0): Conv1d(128, 256, kernel_size=(5,), stride=(2,), padding=(2,))
+        (1): GroupNorm(8, 256, eps=1e-05, affine=True)
+        (2): GELU(approximate='none')
+      )
+    )
+    (proj): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+  )
+  (quantizer): VQEMAQuantizer()
+  (decoder): WrenchDecoder(
+    (from_embed): Conv1d(256, 256, kernel_size=(3,), stride=(1,), padding=(1,))
+    (up_strided): ModuleList(
+      (0): Sequential(
+        (0): ConvTranspose1d(256, 128, kernel_size=(5,), stride=(2,), padding=(2,), output_padding=(1,))
+        (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+        (2): GELU(approximate='none')
+      )
+      (1): Sequential(
+        (0): ConvTranspose1d(128, 128, kernel_size=(5,), stride=(2,), padding=(2,), output_padding=(1,))
+        (1): GroupNorm(8, 128, eps=1e-05, affine=True)
+        (2): GELU(approximate='none')
+      )
+    )
+    (head): Conv1d(128, 6, kernel_size=(5,), stride=(1,), padding=(2,))
+  )
+)
+
+VQ config = WrenchVQVAEConfig(window=16, wrench_dim=6, hidden_channels=128, bottleneck_channels=256, embed_dim=256, n_strided_blocks=2, codebook_size=64, commitment_weight=0.25, decay=0.99, eps=1e-05, revive_freq=200, revive_threshold=1.0, use_magnitude_weight=True, weight_alpha=2.0, weight_tau=4.0)
+
+========================================================================================================================
+ACTUAL VQ SHAPE TRACE
+========================================================================================================================
+raw/norm       (1, 16, 6)
+transpose      (1, 6, 16)
+stem           (1, 128, 16)
+stride[0]      (1, 128, 8)
+stride[1]      (1, 256, 4)
+proj           (1, 256, 4)
+mean-pool code (1, 256)
+VQ index       (1,) tensor([22], device='cuda:0')
+MoT hist token (1, 1024)
+
+========================================================================================================================
+ACTUAL TOKEN COUNTS
+========================================================================================================================
+Video  = 98
+Action = 8
+Wrench = 10
+Total  = 116
+
+========================================================================================================================
+ACTUAL WRENCH LOCAL CAUSAL MASK
+token order:
+HIST NOW F1 F2 F3 F4 F5 F6 F7 F8
+========================================================================================================================
+tensor([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], dtype=torch.int32)
+
+STRICT WRENCH CAUSAL MASK PASSED
+
+========================================================================================================================
+ACTUAL LAYER-0 QKV
+========================================================================================================================
+
+[video]
+Q weight: (3072, 3072)
+K weight: (3072, 3072)
+V weight: (3072, 3072)
+
+[action]
+Q weight: (3072, 1024)
+K weight: (3072, 1024)
+V weight: (3072, 1024)
+
+[wrench]
+Q weight: (3072, 1024)
+K weight: (3072, 1024)
+V weight: (3072, 1024)
+video actual Q=(1, 98, 3072) K=(1, 98, 3072) V=(1, 98, 3072)
+action actual Q=(1, 8, 3072) K=(1, 8, 3072) V=(1, 8, 3072)
+wrench actual Q=(1, 10, 3072) K=(1, 10, 3072) V=(1, 10, 3072)
+
+========================================================================================================================
+ACTUAL LAYER-0 MODALITY ATTENTION MASS
+rows=query, columns=key
+========================================================================================================================
+QUERY                VIDEO        ACTION        WRENCH
+video             1.000000      0.000000      0.000000
+action            0.726354      0.273646      0.000000
+wrench            0.876584      0.069261      0.054155
+
+Last future Wrench token:
+  -> video: 0.859067
+  -> action: 0.047928
+  -> wrench: 0.093004
+
+ACTUAL THREE-EXPERT CHECK PASSED
